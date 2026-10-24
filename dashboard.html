@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f1f2f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .dashboard-card {
+            background: #ffffff;
+            padding: 35px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 380px;
+        }
+        .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            object-fit: cover;
+            border: 4px solid #0984e3;
+        }
+        h2 {
+            color: #2d3436;
+            margin-bottom: 5px;
+            font-size: 22px;
+        }
+        .username {
+            color: #0984e3;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+        .info-box {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #4b6584;
+        }
+        .info-box span {
+            font-weight: bold;
+            color: #2b6cb0;
+        }
+        .logout-btn {
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+        .logout-btn:hover {
+            background-color: #ff6b81;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-card">
+        <img id="user-photo" class="avatar" src="" alt="Profile Picture" style="display:none;">
+        <h2 id="user-name">Loading...</h2>
+        <div id="user-username" class="username">@username</div>
+        
+        <div class="info-box">
+            <p>Telegram ID: <span id="user-id">-</span></p>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">Log Out</button>
+    </div>
+
+    <script>
+        // LocalStorage থেকে ইউজারের ডেটা লোড করা
+        const userData = localStorage.getItem('tg_user');
+
+        if (!userData) {
+            // কেউ যদি লগইন না করে সরাসরি ড্যাশবোর্ডে আসতে চায়, তাকে ইনডেক্সে ফেরত পাঠানো হবে
+            window.location.href = 'index.html';
+        } else {
+            const user = JSON.parse(userData);
+
+            // HTML এলিমেন্টে ডেটা বসানো
+            document.getElementById('user-name').innerText = `${user.first_name} ${user.last_name || ''}`;
+            document.getElementById('user-id').innerText = user.id;
+            
+            if (user.username) {
+                document.getElementById('user-username').innerText = '@' + user.username;
+            } else {
+                document.getElementById('user-username').innerText = 'No Username';
+            }
+
+            if (user.photo_url) {
+                const photoElement = document.getElementById('user-photo');
+                photoElement.src = user.photo_url;
+                photoElement.style.display = 'inline-block';
+            }
+        }
+
+        // লগআউট ফাংশন
+        function logout() {
+            localStorage.removeItem('tg_user');
+            window.location.href = 'index.html';
+        }
+    </script>
+
+</body>
+</html>
