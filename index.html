@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login with Telegram</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-card {
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-card h2 {
+            color: #2d3436;
+            margin-bottom: 10px;
+            font-size: 26px;
+        }
+        .login-card p {
+            color: #636e72;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+        .telegram-btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>Hello There! 👋</h2>
+        <p>Sign in quickly & securely using your Telegram account</p>
+
+        <!-- Telegram Modern OIDC Login Script with your Client ID -->
+        <div class="telegram-btn-container">
+            <script async 
+                src="https://oauth.telegram.org/js/telegram-login.js?6" 
+                data-client-id="8740083050" 
+                data-onauth="onTelegramAuth(data)" 
+                data-request-access="write">
+            </script>
+        </div>
+    </div>
+
+    <script>
+        // সফলভাবে লগইন হওয়ার পর এই ফাংশন কাজ করবে
+        function onTelegramAuth(user) {
+            console.log("User Data:", user);
+            
+            // ইউজারের ডেটা ব্রাউজারে সেভ করে ড্যাশবোর্ডে পাঠাচ্ছি
+            localStorage.setItem('tg_user', JSON.stringify(user));
+            
+            // ড্যাশবোর্ড পেজে রিডাইরেক্ট হবে
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+
+</body>
+</html>
